@@ -1,0 +1,86 @@
+/* Reset default styles for HTML elements */
+html, body, h1, h2, p, ul, li, label, select, input, button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/* Set a background color and font for the entire page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+}
+
+/* Style the top bar with a background color and centered text */
+.top-bar {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Create a grid container for the page */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Style the patient information section */
+.patient-info {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the bill section */
+.bill {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Style input fields and dropdowns */
+input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style the "Add to Bill" button */
+button#add-to-bill {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button#add-to-bill:hover {
+    background-color: #2376b2;
+}
+
+/* Style the bill items list */
+#selected-items li {
+    list-style: none;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0;
+}
+
+/* Style the total cost section */
+#total-cost {
+    font-weight: bold;
+}
+
+/* Style the patient name in the bill section */
+#bill-patient-name {
+    font-weight: bold;
+    font-size: 1.2em;
+}

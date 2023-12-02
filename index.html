@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Billing System</title>
+    <link rel="stylesheet" type="text/css" href="style1.css">
+</head>
+<body>
+    <div class="top-bar">
+        <h1>Patient Billing System</h1>
+    </div>
+    
+    <div class="grid-container">
+        <div class="patient-info">
+            <h2>Patient Information</h2>
+            <label for="patient-name">Patient Name:</label>
+            <input type="text" id="patient-name">
+            <br>
+            <label for="patient-age">Patient Age:</label>
+            <input type="text" id="patient-age">
+            <br>
+            <label for="patient-address">Patient Address:</label>
+            <input type="text" id="patient-address">
+            <br>
+            <label for="department">Department:</label>
+            <select id="department">
+                <!-- Add department options here -->
+            </select>
+            <br>
+            <label for="particulars">Particulars:</label>
+            <select id="particulars">
+                <!-- Add particular options here -->
+            </select>
+            <br>
+            <label for="rate">Rate:</label>
+            <input type="text" id="rate" readonly>
+            <br>
+            <button id="add-to-bill">Add to Bill</button>
+        </div>
+
+        <div class="bill">
+            <h2>Bill</h2>
+            <p>Patient Name: <span id="bill-patient-name"></span></p>
+            <ul id="selected-items">
+                <!-- Selected items will be dynamically added here -->
+            </ul>
+            <p>Total Cost: Rs.<span id="total-cost">0</span></p>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
