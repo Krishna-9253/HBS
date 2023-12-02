@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Account Creation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f7f7f7;
+        }
+
+        .card {
+            width: 400px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: #5799e4;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .btn {
+            background: #424fa4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="card-header text-center">Admin Account Creation</div>
+        <div class="card-body">
+            <form onsubmit="return validateForm(event)">
+                <div class="form-group">
+                    <label for="newUsername">New Username</label>
+                    <input type="text" class="form-control" id="newUsername" placeholder="Enter new username" required>
+                    <div id="newUsernameError" class="invalid-feedback" style="display: none;">Please enter a new username.</div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+                    <div id="emailError" class="invalid-feedback" style="display: none;">Please enter a valid email.</div>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" class="form-control" id="newPassword" placeholder="Enter new password" required>
+                    <div id="newPasswordError" class="invalid-feedback" style="display: none;">Please enter a new password.</div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Re-enter the password" required>
+                    <div id="confirmPasswordError" class="invalid-feedback" style="display: none;">Please confirm the password.</div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function validateForm(event) {
+            event.preventDefault(); // To prevent the form from submitting before redirection
+
+            const newUsername = document.getElementById("newUsername");
+            const newPassword = document.getElementById("newPassword");
+            const confirmPassword = document.getElementById("confirmPassword");
+            const email = document.getElementById("email");
+            const newUsernameError = document.getElementById("newUsernameError");
+            const newPasswordError = document.getElementById("newPasswordError");
+            const confirmPasswordError = document.getElementById("confirmPasswordError");
+            const emailError = document.getElementById("emailError");
+
+            if (newUsername.value.trim() === "") {
+                newUsernameError.style.display = "block";
+                return false;
+            } else {
+                newUsernameError.style.display = "none";
+            }
+
+            if (email.value.trim() === "" || !email.value.includes("@")) {
+                emailError.style.display = "block";
+                return false;
+            } else {
+                emailError.style.display = "none";
+            }
+
+            if (newPassword.value.trim() === "") {
+                newPasswordError.style.display = "block";
+                return false;
+            } else {
+                newPasswordError.style.display = "none";
+            }
+
+            if (confirmPassword.value.trim() === "") {
+                confirmPasswordError.style.display = "block";
+                return false;
+            } else {
+                confirmPasswordError.style.display = "none";
+            }
+
+            if (newPassword.value !== confirmPassword.value) {
+                confirmPasswordError.innerText = "Passwords do not match.";
+                confirmPasswordError.style.display = "block";
+                return false;
+            } else {
+                confirmPasswordError.style.display = "none";
+            }
+
+            alert("Account created successfully");
+            window.location.href = "admin-login.html"; // Navigate to admin login page
+            return true;
+        }
+    </script>
+</body>
+
+</html>

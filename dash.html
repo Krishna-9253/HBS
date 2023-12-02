@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f7f7f7;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+        }
+
+        .content {
+            width: 75%;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-heading {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px; /* Adjust the font size as needed */
+            font-weight: bold; /* Make the text bold if desired */
+            text-transform: uppercase; /* Convert the text to uppercase */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .btn-update {
+            background-color: #0f9d58;
+        }
+
+        .btn-delete {
+            background-color: #db4437;
+        }
+
+        .btn-update {
+            margin-right: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <h2>Admin Dashboard</h2>
+            <ul>
+                <li><a href="#" onclick="showStaffPanel()">Staffs</a></li>
+                <li><a href="#" onclick="showParticularsPanel()">Particulars</a></li>
+            </ul>
+        </div>
+        <div class="content" id="staffPanel">
+            <!-- Staff panel content will be dynamically updated here -->
+        </div>
+        <div class="content" id="particularsPanel" style="display: none;">
+            <!-- Particulars panel content will be dynamically updated here -->
+        </div>
+    </div>
+
+    <!-- Add Staff Modal -->
+    <div id="addStaffModal" class="modal">
+        <div class="modal-content">
+            <h2 class="panel-heading">Add Staff</h2>
+            <form onsubmit="addStaff(); return false;">
+                <label for="staffEmail">Email:</label>
+                <input type="email" id="staffEmail" required>
+                <label for="staffUsername">Username:</label>
+                <input type="text" id="staffUsername" required>
+                <label for="staffPassword">Password:</label>
+                <input type="password" id="staffPassword" required>
+                <div class="button-container">
+                    <button type="submit" class="btn">Add</button>
+                    <button onclick="closeModal()" class="btn">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Particulars Panel -->
+    <div id="addParticularModal" class="modal">
+        <div class="modal-content">
+            <h2 class="panel-heading">Add Particular</h2>
+            <form onsubmit="addParticular(); return false;">
+                <label for="particularDepartment">Department:</label>
+                <input type="text" id="particularDepartment" required>
+                <label for="particularName">Particular:</label>
+                <input type="text" id="particularName" required>
+                <label for="particularRate">Rate:</label>
+                <input type="number" id="particularRate" required>
+                <div class="button-container">
+                    <button type="submit" class="btn">Add</button>
+                    <button onclick="closeModal()" class="btn">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showStaffPanel() {
+            document.getElementById("staffPanel").style.display = "block";
+            document.getElementById("particularsPanel").style.display = "none";
+            loadStaffPanel();
+        }
+
+        function showParticularsPanel() {
+            document.getElementById("staffPanel").style.display = "none";
+            document.getElementById("particularsPanel").style.display = "block";
+            loadParticularsPanel();
+        }
+
+        function loadStaffPanel() {
+            document.getElementById("staffPanel").innerHTML = `
+                <h3 class="panel-heading">Staffs</h3>
+                <div class="button-container">
+                    <button onclick="openAddStaffModal()" class="btn">Add Staff</button>
+                </div>
+                <table id="staffTable">
+                    <tr>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Action</th>
+                    </tr>
+                </table>
+            `;
+            // You can load staff data from your backend here and populate the table
+        }
+
+        function openAddStaffModal() {
+            document.getElementById("addStaffModal").style.display = "block";
+            const addButton = document.querySelector("#addStaffModal button[type='submit']");
+            addButton.innerHTML = "Add";
+            addButton.onclick = function () {
+                addStaff();
+            };
+        }
+
+        function addStaff() {
+            const staffEmail = document.getElementById("staffEmail").value;
+            const staffUsername = document.getElementById("staffUsername").value;
+            const staffPassword = document.getElementById("staffPassword").value;
+
+            // Add staff details to the table
+            const staffTable = document.getElementById("staffTable");
+            const newRow = staffTable.insertRow(-1);
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+
+            cell1.innerHTML = staffEmail;
+            cell2.innerHTML = staffUsername;
+            cell3.innerHTML = staffPassword;
+            cell4.innerHTML = `<button class="btn btn-update" onclick="openUpdateStaffModal(this.parentElement.parentElement)">Update</button>
+                               <button class="btn btn-delete" onclick="deleteStaff(this.parentElement.parentElement)">Delete</button>`;
+
+            // Close the modal after adding staff
+            closeModal();
+        }
+
+        function loadParticularsPanel() {
+            document.getElementById("particularsPanel").innerHTML = `
+                <h3 class="panel-heading">Particulars</h3>
+                <div class="button-container">
+                    <button onclick="openAddParticularModal()" class="btn">Add Particular</button>
+                </div>
+                <table id="particularsTable">
+                    <tr>
+                        <th>Department</th>
+                        <th>Particular</th>
+                        <th>Rate</th>
+                        <th>Action</th>
+                    </tr>
+                </table>
+            `;
+            // You can load particulars data from your backend here and populate the table
+        }
+
+        function openAddParticularModal() {
+            document.getElementById("addParticularModal").style.display = "block";
+            const addButton = document.querySelector("#addParticularModal button[type='submit']");
+            addButton.innerHTML = "Add";
+            addButton.onclick = function () {
+                addParticular();
+            };
+        }
+
+        function addParticular() {
+            const particularDepartment = document.getElementById("particularDepartment").value;
+            const particularName = document.getElementById("particularName").value;
+            const particularRate = document.getElementById("particularRate").value;
+
+            // Add particulars to the table
+            const particularsTable = document.getElementById("particularsTable");
+            const newRow = particularsTable.insertRow(-1);
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+
+            cell1.innerHTML = particularDepartment;
+            cell2.innerHTML = particularName;
+            cell3.innerHTML = particularRate;
+            cell4.innerHTML = `<button class="btn btn-update" onclick="openUpdateParticularModal(this.parentElement.parentElement)">Update</button>
+                               <button class="btn btn-delete" onclick="deleteParticular(this.parentElement.parentElement)">Delete</button>`;
+
+            // Close the modal after adding particulars
+            closeModal();
+        }
+
+        function closeModal() {
+            // Close any open modal
+            const modals = document.querySelectorAll(".modal");
+            modals.forEach(modal => modal.style.display = "none");
+
+            // Clear input fields
+            const inputs = document.querySelectorAll("input");
+            inputs.forEach(input => input.value = "");
+        }
+
+        function openUpdateStaffModal(row) {
+            const email = row.cells[0].innerText;
+            const username = row.cells[1].innerText;
+            const password = row.cells[2].innerText;
+
+            document.getElementById("staffEmail").value = email;
+            document.getElementById("staffUsername").value = username;
+            document.getElementById("staffPassword").value = password;
+
+            // Show the addStaffModal with update button
+            openAddStaffModal();
+            const addButton = document.querySelector("#addStaffModal button[type='submit']");
+            addButton.innerHTML = "Update";
+            addButton.onclick = function () {
+                updateStaff(row);
+            };
+        }
+
+        function updateStaff(row) {
+            const email = document.getElementById("staffEmail").value;
+            const username = document.getElementById("staffUsername").value;
+            const password = document.getElementById("staffPassword").value;
+
+            row.cells[0].innerText = email;
+            row.cells[1].innerText = username;
+            row.cells[2].innerText = password;
+
+            // Close the modal after updating staff
+            closeModal();
+        }
+
+        function deleteStaff(row) {
+            row.remove();
+        }
+
+        function openUpdateParticularModal(row) {
+            const department = row.cells[0].innerText;
+            const particular = row.cells[1].innerText;
+            const rate = row.cells[2].innerText;
+
+            document.getElementById("particularDepartment").value = department;
+            document.getElementById("particularName").value = particular;
+            document.getElementById("particularRate").value = rate;
+
+            // Show the addParticularModal with update button
+            openAddParticularModal();
+            const addButton = document.querySelector("#addParticularModal button[type='submit']");
+            addButton.innerHTML = "Update";
+            addButton.onclick = function () {
+                updateParticular(row);
+            };
+        }
+
+        function updateParticular(row) {
+            const department = document.getElementById("particularDepartment").value;
+            const particular = document.getElementById("particularName").value;
+            const rate = document.getElementById("particularRate").value;
+
+            row.cells[0].innerText = department;
+            row.cells[1].innerText = particular;
+            row.cells[2].innerText = rate;
+
+            // Close the modal after updating particular
+            closeModal();
+        }
+
+        function deleteParticular(row) {
+            row.remove();
+        }
+    </script>
+</body>
+
+</html>
